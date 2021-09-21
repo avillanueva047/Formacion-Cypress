@@ -26,7 +26,7 @@
 
 <body>
     <div class="center">
-        <h2 id="titulo">Listados</h2>
+        <!-- <h2 id="titulo">Listados</h2>
         <div>
             <ul id="listaItems">
                 <li class="li1">Item 1</li>
@@ -38,8 +38,26 @@
                 <li class="li2">Cosa 2</li>
                 <li class="li3">Cosa 3</li>
             </ul>
+        </div> -->
+        <div class="center">
+            <div id="caja-retry-ability"></div>
         </div>
     </div>
 </body>
 
 </html>
+
+<script>
+    const btn3500 = document.createElement('button');
+    btn3500.id = "btn-lazy-3500";
+    btn3500.innerText = 'Soy un botón perezoso';
+    setTimeout(() => {
+        document.getElementById('caja-retry-ability').appendChild(btn3500);
+    }, 3500);
+    const btn5500 = document.createElement('button');
+    btn5500.id = "btn-lazy-5500";
+    btn5500.innerText = 'Soy un botón más perezoso todavía';
+    setTimeout(() => {
+        document.getElementById('caja-retry-ability').appendChild(btn5500);
+    }, 5500);
+</script>
