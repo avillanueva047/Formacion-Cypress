@@ -16,19 +16,19 @@ describe('Interacciones', () => {
     });
 
     xit('Si pulsamos números y pulsamos el boton "CLD" los borra', () => {
-        cy.get('#p4, #p5, #p6').click({multiple: true})
+        cy.get('#p4, #p5, #p6').click({ multiple: true })
         cy.get('#pclear').click()
         cy.get('#pantalla-codigo').should('not.have.text')
     });
 
     xit('Si pulsamos números y pulsamos el botón "DEL", elimina el último número introducido', () => {
-        cy.get('#p4, #p5, #p6').click({multiple: true})
+        cy.get('#p4, #p5, #p6').click({ multiple: true })
         cy.get('#pdel').click()
         cy.get('#pantalla-codigo').invoke('text').should('not.include', '6')
     });
 
     xit('No deja introducir un código de más de 4 numeros', () => {
-        cy.get('#p4, #p5, #p6, #p7, #p8').click({multiple: true})
+        cy.get('#p4, #p5, #p6, #p7, #p8').click({ multiple: true })
         cy.get('#pantalla-codigo').invoke('text').should('have.length', 4)
     });
 
@@ -117,11 +117,77 @@ describe('Interacciones', () => {
             })
     });
 
-    it('Drag And Drop', () => {
+    xit('Drag And Drop', () => {
         cy.visit('http://cookbook.seleniumacademy.com/DragDropDemo.html')
         cy.get('#draggable')
             .trigger('mousedown', { which: 1 })
-            .trigger('mousemove', { pageX: 185, pageY: 70})
+            .trigger('mousemove', { pageX: 185, pageY: 70 })
             .trigger('mouseup')
+    });
+
+    xit('El Mensaje del Alert es "Hola Mundo!!!"', () => {
+        cy.visit('http://localhost:8080');
+        cy.get('#btn-alert').click()
+        cy.on('window:alert', (text) => {
+            expect(text).to.be.eq('Hola mundo!!!')
+        })
+    });
+
+    xit('Debería eliminarse el mensaje si aceptamos el popup', () => {
+        cy.visit('http://localhost:8080');
+        cy.get('#btn-confirm').click();
+        cy.on('window:confirm', () => {
+            return true
+        })
+        cy.get('#confirm-nombre').should('be.empty')
+    });
+
+    xit('Deberia mostrarse nuestro nombre cuando lo escribimos en el popup prompt', () => {
+        cy.window()
+            .then((win) => {
+                cy.stub(win, 'prompt').returns('Ángel')
+            })
+        cy.get('#btn-prompt').click()
+        cy.get('#prompt-nombre').should('have.text', 'Ángel')
+        cy.screenshot('aplicacion')
+
+        cy.get('#caja-nombre')
+            .screenshot('informacion-nombre', {
+                blackout: ['#prompt-nombre', '#mensaje-prompt']
+            })
+    })
+
+    it('Login con datos correctos, redirige a la página de Inicio', () => {
+        cy.visit('http://localhost:8080/login');
+        cy.fixture('login.json')
+            .then(datos => {
+                const usuario1 = datos.usuario1
+                cy.get('[name="email"]')
+                    .type(usuario1.email)
+                cy.get('[name="password"]')
+                    .type(usuario1.pass)
+                cy.get('[type="submit"]')
+                    .click()
+                cy.get('h1')
+                    .should('have.text', 'Bienvenido a la página')
+            })
+
+    });
+
+    it('Login con datos incorrectos, no redirige a la página de Inicio', () => {
+        cy.visit('http://localhost:8080/login');
+        cy.fixture('login.json')
+            .then(datos => {
+                const usuario2 = datos.usuario2
+                cy.get('[name="email"]')
+                    .type(usuario2.email)
+                cy.get('[name="password"]')
+                    .type(usuario2.pass)
+                cy.get('[type="submit"]')
+                    .click()
+                cy.location('pathname')
+                    .should('equal', '/login')
+            })
+        
     });
 });

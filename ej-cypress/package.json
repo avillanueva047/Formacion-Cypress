@@ -6,13 +6,17 @@
   "scripts": {
     "test": "cypress open",
     "start": "http-server",
-    "start:1": "http-server ./web-codigo-secreto"
+    "start:1": "http-server ./web-codigo-secreto",
+    "start:2": "http-server ./popups",
+    "start:3": "node ./pagina-fixtures/app.js",
+    "start:4": "node ./api-tiempo/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cypress": "^8.4.1",
+    "express": "^4.17.1",
     "http-server": "^13.0.2"
   }
 }

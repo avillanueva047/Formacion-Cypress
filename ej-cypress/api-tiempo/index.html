@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intercept</title>
+</head>
+
+<body>
+    <p>Tiempo para hoy: <span id="tiempo"></span></p>
+    <script>
+        function getEmoji() {
+            return fetch('http://localhost:8080/get-weather')
+                .then(resp => resp.json())
+                .then(({ weather }) => {
+                    switch (weather) {
+                        case 'soleado': return '☀️';
+                        case 'parcialmente-nublado': return '⛅'; 
+                        case 'nublado': return '☁️';
+                        case 'lluvioso': return '🌧️';
+                        case 'tormenta': return '🌩️';
+                        case 'nevado': return '🌨️';
+                    }
+                });
+        }
+        getEmoji().then(val => {
+            document.getElementById('tiempo').innerText = val;
+        })
+    </script>
+</body>
+
+</html>
